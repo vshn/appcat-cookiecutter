@@ -1,6 +1,7 @@
 {
   "app_name": "appcat",
   "component_repo": "vshn/component-appcat",
+  "provider": false,
   "_copy_without_render": [
     ".github/workflows/cruft-update.yml",
     ".github/changelog-configuration.json"
