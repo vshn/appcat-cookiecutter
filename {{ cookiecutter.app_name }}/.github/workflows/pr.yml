@@ -67,7 +67,7 @@ jobs:
         run: make package-push-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}"
 
       - name: Login to Upbound
-        if: env.UPBOUND_PUSH == 'true'
+        if: env.PUSH_UPBOUND == 'true'
         uses: docker/login-action@v3
         with:
           registry: xpkg.upbound.io

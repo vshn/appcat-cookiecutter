@@ -7,7 +7,8 @@
 IMG_TAG ?= latest
 APP_NAME ?= {{ cookiecutter.app_name }}
 ORG ?= vshn
-GHCR_IMG ?= ghcr.io/$(ORG)/$(APP_NAME):$(IMG_TAG)
+IMG_REPO ?= ghcr.io
+GHCR_IMG ?= $(IMG_REPO)/$(ORG)/$(APP_NAME):$(IMG_TAG)
 DOCKER_CMD ?= docker
 
 {% if cookiecutter.push_upbound -%}
@@ -60,11 +61,13 @@ package-push-branchtag: package-build-branchtag
 
 {% if cookiecutter.push_upbound -%}
 .PHONY: package-push-upbound
+IMG_REPO ?= $(UPBOUND_CONTAINER_REGISTRY)
 package-push-upbound: package-build
 	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${GHCR_IMG} --verbose
 
 .PHONY: package-push-upbound-branchtag
 IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
+IMG_REPO ?= $(UPBOUND_CONTAINER_REGISTRY)
 package-push-upbound-branchtag: package-build-branchtag
 	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${GHCR_IMG} --verbose
 {%- endif %}
