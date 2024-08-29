@@ -1,7 +1,7 @@
-{%- if cookiecutter.provider -%}
-{%- set suffix = '' -%}
-{%- else -%}
+{%- if cookiecutter.push_image -%}
 {%- set suffix = '-func' -%}
+{%- else -%}
+{%- set suffix = '' -%}
 {%- endif -%}
 # Image URL to use all building/pushing image targets
 IMG_TAG ?= latest
@@ -10,7 +10,7 @@ ORG ?= vshn
 GHCR_IMG ?= ghcr.io/$(ORG)/$(APP_NAME):$(IMG_TAG)
 DOCKER_CMD ?= docker
 
-{% if cookiecutter.provider -%}
+{% if cookiecutter.push_upbound -%}
 # Upbound push config
 UPBOUND_CONTAINER_REGISTRY ?= xpkg.upbound.io
 UPBOUND_PACKAGE_IMG ?= $(UPBOUND_CONTAINER_REGISTRY)/$(ORG)/$(APP_NAME):$(IMG_TAG)
@@ -58,7 +58,7 @@ IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
 package-push-branchtag: package-build-branchtag
 	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${GHCR_IMG}{{ suffix }} --verbose
 
-{% if cookiecutter.provider -%}
+{% if cookiecutter.push_upbound -%}
 .PHONY: package-push-upbound
 package-push-upbound: package-build
 	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${GHCR_IMG} --verbose

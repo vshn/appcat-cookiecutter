@@ -11,7 +11,9 @@ on:
 env:
   APP_NAME: {{ cookiecutter.app_name }}
   COMPONENT_REPO: {{ cookiecutter.component_repo }}
-  UPBOUND_PUSH: {{ cookiecutter.provider }}
+  PUSH_UPBOUND: {{ cookiecutter.push_upbound }}
+  PUSH_PACKAGE: {{ cookiecutter.push_package }}
+  PUSH_IMAGE: {{ cookiecutter.push_image }}
 {% raw %}
 jobs:
   check-labels:
@@ -56,11 +58,12 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build branch and push AppCat
-        if: ${{ env.UPBOUND_PUSH }} == "False"
+      - name: Build branch and push image
+        if: ${{ env.PUSH_IMAGE }} == "False"
         run: make docker-push-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}"
 
       - name: Build branch and push package
+        if: ${{ env.PUSH_PACKAGE }} == "True"
         run: make package-push-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}"
 
       - name: Login to Upbound
@@ -72,7 +75,7 @@ jobs:
           password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
 
       - name: Build branch and push package to upbound
-        if: ${{ env.UPBOUND_PUSH }} == "True"
+        if: ${{ env.PUSH_UPBOUND }} == "True" && ${{ env.BUILD_PACKAGE }} == "True"
         run: make package-push-upbound-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}"
 
   open-pr-component:
