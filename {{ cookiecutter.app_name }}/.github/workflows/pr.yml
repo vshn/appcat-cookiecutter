@@ -76,7 +76,7 @@ jobs:
 
       - name: Build branch and push package to upbound
         if: env.PUSH_UPBOUND == 'true' && env.PUSH_PACKAGE == 'true'
-        run: make package-push-upbound-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}"
+        run: make package-push-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}" -e IMG_REPO=xpkg.upbound.io
 
   open-pr-component:
     if: github.event.action == 'opened'

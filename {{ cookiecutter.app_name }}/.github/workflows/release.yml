@@ -65,7 +65,7 @@ jobs:
 
       - name: Build branch and push package to upbound
         if: env.PUSH_UPBOUND == 'true' && env.PUSH_PACKAGE == 'true'
-        run: make package-push-upbound -e IMG_TAG=${GITHUB_REF##*/} -e APP_NAME=${{ env.APP_NAME }}
+        run: make package-push -e IMG_TAG=${GITHUB_REF##*/} -e APP_NAME=${{ env.APP_NAME }} -e IMG_REPO=xpkg.upbound.io
 
       - name: Build changelog from PRs with labels
         id: build_changelog

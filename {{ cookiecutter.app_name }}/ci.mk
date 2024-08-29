@@ -58,16 +58,3 @@ package-build-branchtag: docker-build-branchtag
 IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
 package-push-branchtag: package-build-branchtag
 	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG}{{ suffix }} --verbose
-
-{% if cookiecutter.push_upbound -%}
-.PHONY: package-push-upbound
-IMG_REPO ?= $(UPBOUND_CONTAINER_REGISTRY)
-package-push-upbound: package-build
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG} --verbose
-
-.PHONY: package-push-upbound-branchtag
-IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
-IMG_REPO ?= $(UPBOUND_CONTAINER_REGISTRY)
-package-push-upbound-branchtag: package-build-branchtag
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG} --verbose
-{%- endif %}
