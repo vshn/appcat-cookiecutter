@@ -59,7 +59,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build branch and push image
-        if: ${{ env.PUSH_IMAGE }} == "False"
+        if: ${{ env.PUSH_IMAGE }} == "True"
         run: make docker-push-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}"
 
       - name: Build branch and push package
