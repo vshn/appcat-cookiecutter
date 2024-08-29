@@ -11,9 +11,9 @@ on:
 env:
   APP_NAME: {{ cookiecutter.app_name }}
   COMPONENT_REPO: {{ cookiecutter.component_repo }}
-  PUSH_UPBOUND: {{ cookiecutter.push_upbound }}
-  PUSH_PACKAGE: {{ cookiecutter.push_package }}
-  PUSH_IMAGE: {{ cookiecutter.push_image }}
+  PUSH_UPBOUND: "{{ cookiecutter.push_upbound }}"
+  PUSH_PACKAGE: "{{ cookiecutter.push_package }}"
+  PUSH_IMAGE: "{{ cookiecutter.push_image }}"
 {% raw %}
 jobs:
   check-labels:
