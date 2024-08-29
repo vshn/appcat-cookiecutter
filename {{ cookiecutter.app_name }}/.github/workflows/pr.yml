@@ -75,7 +75,7 @@ jobs:
           password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
 
       - name: Build branch and push package to upbound
-        if: ${{ env.PUSH_UPBOUND }} == "True" && ${{ env.BUILD_PACKAGE }} == "True"
+        if: env.PUSH_UPBOUND == 'true' && env.BUILD_PACKAGE == 'true'
         run: make package-push-upbound-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}"
 
   open-pr-component:
