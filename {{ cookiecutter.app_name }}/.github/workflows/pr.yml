@@ -59,15 +59,15 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build branch and push image
-        if: ${{ env.PUSH_IMAGE }} == "True"
+        if: env.PUSH_IMAGE == 'true'
         run: make docker-push-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}"
 
       - name: Build branch and push package
-        if: ${{ env.PUSH_PACKAGE }} == "True"
+        if: env.PUSH_PACKAGE == 'True'
         run: make package-push-branchtag -e IMG_TAG="${{ steps.extract_branch.outputs.branch }}"
 
       - name: Login to Upbound
-        if: ${{ env.UPBOUND_PUSH }} == "True"
+        if: env.UPBOUND_PUSH == 'true'
         uses: docker/login-action@v3
         with:
           registry: xpkg.upbound.io
