@@ -8,7 +8,7 @@ IMG_TAG ?= latest
 APP_NAME ?= {{ cookiecutter.app_name }}
 ORG ?= vshn
 IMG_REPO ?= ghcr.io
-GHCR_IMG ?= $(IMG_REPO)/$(ORG)/$(APP_NAME):$(IMG_TAG)
+IMG ?= $(IMG_REPO)/$(ORG)/$(APP_NAME):$(IMG_TAG)
 DOCKER_CMD ?= docker
 
 {% if cookiecutter.push_upbound -%}
@@ -25,7 +25,7 @@ DOCKER_IMAGE_GOARCH = amd64
 docker-build:
 	env CGO_ENABLED=0 GOOS=$(DOCKER_IMAGE_GOOS) GOARCH=$(DOCKER_IMAGE_GOARCH) \
 		go build -o ${BIN_FILENAME}
-	docker build --platform $(DOCKER_IMAGE_GOOS)/$(DOCKER_IMAGE_GOARCH) -t ${GHCR_IMG} .
+	docker build --platform $(DOCKER_IMAGE_GOOS)/$(DOCKER_IMAGE_GOARCH) -t ${IMG} .
 
 .PHONY: docker-build-branchtag
 IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
@@ -33,7 +33,7 @@ docker-build-branchtag: docker-build ## Build docker image with current branch n
 
 .PHONY: docker-push
 docker-push: docker-build ## Push docker image with the manager.
-	docker push ${GHCR_IMG}
+	docker push ${IMG}
 
 .PHONY: docker-push-branchtag
 IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
@@ -42,32 +42,32 @@ docker-push-branchtag: docker-build-branchtag docker-push ## Push docker image w
 .PHONY: package-build
 package-build: docker-build
 	rm -f package/*.xpkg
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg build -f package --verbose --embed-runtime-image=${GHCR_IMG} -o package/package.xpkg
+	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg build -f package --verbose --embed-runtime-image=${IMG} -o package/package.xpkg
 
 .PHONY: package-push
 package-push: package-build
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${GHCR_IMG}{{ suffix }} --verbose
+	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG}{{ suffix }} --verbose
 
 .PHONY: package-build-branchtag
 IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
 package-build-branchtag: docker-build-branchtag
 	rm -f package/*.xpkg
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg build -f package --verbose --embed-runtime-image=${GHCR_IMG} -o package/package.xpkg
+	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg build -f package --verbose --embed-runtime-image=${IMG} -o package/package.xpkg
 
 .PHONY: package-push-package-branchtag
 IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
 package-push-branchtag: package-build-branchtag
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${GHCR_IMG}{{ suffix }} --verbose
+	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG}{{ suffix }} --verbose
 
 {% if cookiecutter.push_upbound -%}
 .PHONY: package-push-upbound
 IMG_REPO ?= $(UPBOUND_CONTAINER_REGISTRY)
 package-push-upbound: package-build
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${GHCR_IMG} --verbose
+	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG} --verbose
 
 .PHONY: package-push-upbound-branchtag
 IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
 IMG_REPO ?= $(UPBOUND_CONTAINER_REGISTRY)
 package-push-upbound-branchtag: package-build-branchtag
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${GHCR_IMG} --verbose
+	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG} --verbose
 {%- endif %}
