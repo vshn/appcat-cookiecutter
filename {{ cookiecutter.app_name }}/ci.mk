@@ -28,7 +28,7 @@ docker-build:
 	docker build --platform $(DOCKER_IMAGE_GOOS)/$(DOCKER_IMAGE_GOARCH) -t ${IMG} .
 
 .PHONY: docker-build-branchtag
-IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
+docker-build-branchtag: export IMG_TAG=$(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
 docker-build-branchtag: docker-build ## Build docker image with current branch name
 
 .PHONY: docker-push
@@ -36,7 +36,7 @@ docker-push: docker-build ## Push docker image with the manager.
 	docker push ${IMG}
 
 .PHONY: docker-push-branchtag
-IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
+docker-push-branchtag: export IMG_TAG=$(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
 docker-push-branchtag: docker-build-branchtag docker-push ## Push docker image with current branch name
 
 .PHONY: package-build
@@ -46,15 +46,24 @@ package-build: docker-build
 
 .PHONY: package-push
 package-push: package-build
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG}{{ suffix }} --verbose
+	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG} --verbose
 
 .PHONY: package-build-branchtag
-IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
-package-build-branchtag: docker-build-branchtag
-	rm -f package/*.xpkg
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg build -f package --verbose --embed-runtime-image=${IMG} -o package/package.xpkg
+package-build-branchtag: export IMG_TAG=$(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
+package-build-branchtag: docker-build-branchtag package-build
 
 .PHONY: package-push-package-branchtag
-IMG_TAG ?=  $(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
-package-push-branchtag: package-build-branchtag
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG}{{ suffix }} --verbose
+package-push-package-branchtag: export IMG_TAG=$(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
+package-push-branchtag: package-build-branchtag package-push
+
+.PHONY: docker-build-local
+docker-build-local: export IMG_REPO=localhost:5000
+docker-build-local: docker-build
+
+.PHONY: package-build-local
+package-build-local: export IMG_REPO=localhost:5000
+package-build-local: docker-build-local package-build
+
+.PHONY: package-push-local
+package-push-local: export IMG_REPO=localhost:5000
+package-push-local: package-build-local package-push
