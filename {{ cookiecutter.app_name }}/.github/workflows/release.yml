@@ -1,3 +1,8 @@
+{%- if cookiecutter.push_image -%}
+{%- set suffix = '' -%}
+{%- else -%}
+{%- set suffix = '/controller' -%}
+{%- endif -%}
 name: Release
 
 on:
@@ -10,6 +15,7 @@ env:
   PUSH_UPBOUND: "{{ cookiecutter.push_upbound }}"
   PUSH_PACKAGE: "{{ cookiecutter.push_package }}"
   PUSH_IMAGE: "{{ cookiecutter.push_image }}"
+  SUFFIX: "{{ suffix }}"
 {% raw %}
 jobs:
   dist:
@@ -86,4 +92,6 @@ jobs:
           args: release --release-notes .github/release-notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONTAINER_REGISTRY: ghcr.io
+          IMAGE_NAME: ${{ github.repository }}{{ env.SUFFIX }}
 {% endraw %}
