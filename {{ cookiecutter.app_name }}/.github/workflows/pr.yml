@@ -174,7 +174,7 @@ jobs:
           major_ver="${major_ver:1}"
 
           # Check for patch label
-          [ ! -z "$bug" ] && [ -z "$minor" ] && [ -z "$major" ] && ((patch_ver++)) || true
+          [ ! -z "$patch" ] && [ -z "$minor" ] && [ -z "$major" ] && ((patch_ver++)) || true
 
           # check for minor label
           if [ ! -z "$minor" ] && [ -z "$major" ]; then
