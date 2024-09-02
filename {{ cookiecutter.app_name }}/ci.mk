@@ -58,7 +58,8 @@ package-push-branchtag: package-build-branchtag package-push
 
 .PHONY: docker-build-local
 docker-build-local: export IMG_REPO=localhost:5000
-docker-build-local: docker-build
+docker-build-local:
+	$(MAKE) docker-build
 
 .PHONY: package-build-local
 package-build-local: export IMG_REPO=localhost:5000
