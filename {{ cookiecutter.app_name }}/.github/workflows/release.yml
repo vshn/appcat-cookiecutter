@@ -93,5 +93,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CONTAINER_REGISTRY: ghcr.io
-          IMAGE_NAME: ${{ github.repository }}{{ env.SUFFIX }}
+          IMAGE_NAME: ${{ github.repository }}${{ env.SUFFIX }}
 {% endraw %}
