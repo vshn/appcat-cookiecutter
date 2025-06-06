@@ -28,3 +28,9 @@ cruft create https://github.com/vshn/appcat-cookiecutter -f
    Pull requests: read/write
    Workflows: read/write
 7. Add the token as `COMPONENT_ACCESS_TOKEN` to the App's repository secret
+
+## Import rulesets
+
+This repository also contains some default rulesets that enforce our gitflow.
+
+They are JSON files in the `rulesets` folder. In the repository go to `settings` -> `rules` -> `rulesets` -> `new ruleset` -> `import from json`.

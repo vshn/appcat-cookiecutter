@@ -94,6 +94,9 @@ jobs:
   open-or-update-pr-component:
     runs-on: ubuntu-latest
     steps:
+      - name: Get current labels
+        uses: snnaplab/get-labels-action@v1
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -118,9 +121,6 @@ jobs:
         if: github.event.pull_request.number != 0 && github.event.action == 'opened'
         run: |
           make gen-golden-all
-
-      - name: Get current labels
-        uses: snnaplab/get-labels-action@v1
 
       - name: Check if it's a hotfix
         id: hotfix_check
