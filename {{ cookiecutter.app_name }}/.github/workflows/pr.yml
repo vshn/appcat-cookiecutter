@@ -233,6 +233,7 @@ jobs:
           repository: ${{ env.COMPONENT_REPO }}
           token: ${{ secrets.COMPONENT_ACCESS_TOKEN }}
           ref: "${{ env.APP_NAME }}/${{ github.event.pull_request.number }}/${{ steps.extract_branch.outputs.branch }}"
+          history: 0
 
       - name: Update tag and run golden
         run: |
