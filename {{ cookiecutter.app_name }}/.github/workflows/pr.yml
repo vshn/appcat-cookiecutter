@@ -104,7 +104,7 @@ jobs:
         with:
           repository: ${{ env.COMPONENT_REPO }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          history: 0
+          fetch-depth: 0
 
       - name: Extract branch name
         shell: bash
@@ -235,7 +235,7 @@ jobs:
           repository: ${{ env.COMPONENT_REPO }}
           token: ${{ secrets.COMPONENT_ACCESS_TOKEN }}
           ref: "${{ env.APP_NAME }}/${{ github.event.pull_request.number }}/${{ steps.extract_branch.outputs.branch }}"
-          history: 0
+          fetch-depth: 0
 
       - name: Update tag and run golden
         run: |
