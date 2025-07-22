@@ -1,8 +1,6 @@
 name: Pre Release
 
 on:
-  schedule:
-    - cron: '0 12 * * 2' # Every Tuesday at 12:00
   workflow_dispatch: # Allow manual trigger
 
 env:
