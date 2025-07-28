@@ -6,6 +6,7 @@ on:
 env:
   APP_NAME: {{ cookiecutter.app_name }}
   COMPONENT_REPO: {{ cookiecutter.component_repo }}
+  APPCAT_REPO: {{ cookiecutter.appcat_repo }}
 {% raw %}
 jobs:
   create-and-merge-appcat-pr:

@@ -1,5 +1,6 @@
 {
   "app_name": "appcat",
+  "appcat_repo": "vshn/appcat",
   "component_repo": "vshn/component-appcat",
   "push_upbound": false,
   "push_package": true,
