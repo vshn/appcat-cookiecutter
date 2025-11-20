@@ -52,7 +52,7 @@ jobs:
     if: github.event.action != 'closed' && (github.event.pull_request.base.ref != 'develop' || github.event.pull_request.head.ref != 'master')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -114,7 +114,7 @@ jobs:
         uses: snnaplab/get-labels-action@v1
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ env.COMPONENT_REPO }}
           token: ${{ secrets.GITHUB_TOKEN }}

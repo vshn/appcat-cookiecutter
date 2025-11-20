@@ -17,7 +17,7 @@ jobs:
       new_tag: ${{ steps.bump.outputs.new_tag }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -100,7 +100,7 @@ jobs:
       GH_TOKEN: ${{ secrets.COMPONENT_ACCESS_TOKEN }}
     steps:
       - name: Clone component repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ env.COMPONENT_REPO }}
           token: ${{ secrets.COMPONENT_ACCESS_TOKEN }}
