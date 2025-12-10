@@ -144,7 +144,7 @@ jobs:
           ${{ contains(fromJSON(env.LABELS), 'hotfix') }} && echo "base=master" >> $GITHUB_OUTPUT || echo "base=develop" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         id: cpr
         with:
           token: ${{ secrets.COMPONENT_ACCESS_TOKEN }}
