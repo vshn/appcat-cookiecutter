@@ -43,7 +43,7 @@ jobs:
         with:
           labels: ignoreChangelog
 
-      - uses: docker://agilepathway/pull-request-label-checker:v1.6.51
+      - uses: docker://agilepathway/pull-request-label-checker:v1.6.67
         with:
           one_of: major,minor,patch,documentation,dependency
           repo_token: ${{ secrets.GITHUB_TOKEN }}
